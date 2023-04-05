@@ -17,4 +17,5 @@ class AllStrings {
   static String phoneIsRequired = "Phone is required";
   static String companyNameIsRequired = "Company name is required";
   static String designationIsRequired = "Designation is required";
+  static String warningMsgForUserPackageDetails = "If You pay on bkash, then must add reference number when send money, Because of we can understand who send money, Otherwise tk can be missing\nআপনি যদি বিকাশে অর্থ প্রদান করেন, তাহলে টাকা পাঠানোর সময় অবশ্যই রেফারেন্স নম্বর যোগ করতে হবে, কারণ আমরা বুঝতে পারি কে টাকা পাঠায়, অন্যথায় টাকা হারিয়ে যেতে পারে";
 }

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "578468705609",
+    "project_id": "happyfamily-2a38e",
+    "storage_bucket": "happyfamily-2a38e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:578468705609:android:6188616482fd2a2344d698",
+        "android_client_info": {
+          "package_name": "com.invain.happy_family.happy_family"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "578468705609-afnrl536eimcqb1msp7l3s43jtg3gejh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_xncM2i1ksUotvZI5kwcTKrUYt_vgTLk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "578468705609-afnrl536eimcqb1msp7l3s43jtg3gejh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
