@@ -1,6 +1,6 @@
 import '../../../../../model/event_model.dart';
 
 abstract class SendRequestViewInterface {
-  void onSendRequestForMoneyPressed(EventModel eventModel);
+  void onSendRequestForMoneyPressed();
   void onPopupAppBarIconClicked(String value);
 }

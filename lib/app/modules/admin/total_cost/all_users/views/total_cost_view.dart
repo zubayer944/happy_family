@@ -61,55 +61,6 @@ class TotalCostView extends GetView<AllUsersController> {
                       },
                     ),
                   ),
-                  // child: StreamBuilder<QuerySnapshot>(
-                  //   stream: FirebaseFirestore.instance
-                  //       .collection('events')
-                  //       .doc(controller.id)
-                  //       .collection("debitCredit")
-                  //       .snapshots(),
-                  //   builder: (BuildContext context,
-                  //       AsyncSnapshot<QuerySnapshot> snapshot) {
-                  //     if (snapshot.hasError) {
-                  //       return const Center(
-                  //           child: Text('Something went wrong'));
-                  //     }
-                  //     if (snapshot.connectionState == ConnectionState.waiting) {
-                  //       return Center(
-                  //           child: Container(
-                  //               height: 100,
-                  //               width: 100,
-                  //               decoration: BoxDecoration(
-                  //                 borderRadius: BorderRadius.circular(8),
-                  //               ),
-                  //               child: const Text("Loading")));
-                  //     }
-                  //     if ((snapshot.data?.docs ?? []).isEmpty) {
-                  //       return const Center(child: Text("No Event Available"));
-                  //     }
-                  //     return SizedBox(
-                  //       height: 400,
-                  //       child: ListView(
-                  //           children: snapshot.data!.docs
-                  //               .asMap()
-                  //               .entries
-                  //               .map((value) {
-                  //         Map<String, dynamic> data = value.value.data()! as Map<String, dynamic>;
-                  //         DebitCreditModel debitCreditModel = DebitCreditModel.fromJson(data);
-                  //         debitCreditModel.documentId = value.value.id;
-                  //
-                  //         controller.onUpdateTotalCost(debitCreditModel);
-                  //
-                  //         if (value.key == 0) {
-                  //           controller.reset();
-                  //         } else if (value.key ==
-                  //             snapshot.data!.docs.length - 1) {
-                  //           controller.updateAllPrice();
-                  //         }
-                  //         return _debitCreditTotalView(debitCreditModel);
-                  //       }).toList()),
-                  //     );
-                  //   },
-                  // ),
                 )
           ],
         ),

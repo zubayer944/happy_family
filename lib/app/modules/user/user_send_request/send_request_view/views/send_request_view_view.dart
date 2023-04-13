@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../../../../../common/values/my_colors.dart';
 import '../../../../../common/values/style_text.dart';
 import '../../../../../model/event_model.dart';
+import '../../../../admin/total_cost/all_users/models/debit_credit_model.dart';
 import '../controllers/send_request_view_controller.dart';
 
 class SendRequestViewView extends GetView<SendRequestViewController> {
@@ -11,7 +12,15 @@ class SendRequestViewView extends GetView<SendRequestViewController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed:()=> controller.onSendRequestForMoneyPressed(controller.eventMode),child:const Center(child: Icon(Icons.add),),),
+      floatingActionButton: Obx(
+        () => Visibility(
+          visible: (controller.eventMode.value.bookedUserInfo ?? []).where((element) => element.userId == controller.appController.userModel.value.userId).isEmpty,
+          child: FloatingActionButton(
+            onPressed: controller.onSendRequestForMoneyPressed,
+            child: const Center(child: Icon(Icons.add)),
+          ),
+        ),
+      ),
       appBar: AppBar(
         title: const Text('Send Request'),
         centerTitle: true,
@@ -33,44 +42,83 @@ class SendRequestViewView extends GetView<SendRequestViewController> {
               ])
         ],
       ),
-      body: StreamBuilder<DocumentSnapshot>(
-        stream:  FirebaseFirestore.instance.collection('events').doc(controller.eventMode.documentId).snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-          if (snapshot.hasError) {
-            return const Center(child: Text('Something went wrong'));
-          }
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: Container(
-                height: 100,
-                width: 100,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
+      body: Column(
+        children: [
+
+          Obx(
+              () => (controller.eventMode.value.bookedUserInfo ?? []).where((element) => element.userId == controller.appController.userModel.value.userId).isEmpty ? Center(
+                  child: Center(
+                    child: Text(
+                      "You are not booked any package",
+                      style: StyleText.nunitoSans_400_16.copyWith(fontSize: 24, color: MyColors.greyColor),
+                    ),
+                  ),
+                )
+              : _paymentPackage(
+                  controller.eventMode.value,
+                  (controller.eventMode.value.bookedUserInfo ?? []).where((element) => element.userId == controller.appController.userModel.value.userId).first,
+                )),
+
+
+          Obx(
+              () => Visibility(
+                visible: (controller.eventMode.value.bookedUserInfo ?? []).where((element) => element.userId == controller.appController.userModel.value.userId).isNotEmpty,
+                child: Column(
+                  children: [
+                    _richText("মোট জমা",
+                        "${controller.totalCreditPrice.value} টাকা"),
+
+                    _richText("মোট খরচ",
+                        "${controller.totalDebitPrice.value} টাকা"),
+                    Divider(height: 5,color: MyColors.greyColor),
+                    _richText("অবশিষ্ট মোট টাকা",
+                        "${controller.totalCreditPrice.value - controller.totalDebitPrice.value}"),
+                    Container(
+                      padding: const EdgeInsets.all(5),
+                      margin: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: MyColors.greyColor)
+                      ),
+                      child: ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: controller.eventList.length,
+                        itemBuilder: (context, index) {
+                          return _debitCreditTotalView(controller.eventList[index]);
+                        },
+                      ),
+                    )
+                  ],
                 ),
-                child: const Text("Loading")));
-          }
-          var data = snapshot.data?.data();
+              ),
+          )
 
 
-              if(data != null){
-              EventModel eventModel = EventModel.fromJson(data as Map<String,dynamic>);
-              eventModel.documentId = controller.eventMode.documentId;
 
-              BookedUserInfo? bookedUserInfo;
-              controller.eventMode = eventModel;
-              for (BookedUserInfo userInfo in eventModel.bookedUserInfo ?? []) {
-                if (userInfo.userId ==
-                    controller.appController.userModel.value.userId) {
-                  bookedUserInfo = userInfo;
-                  break;
-                }
-              }
-              if (bookedUserInfo != null) {
-                return _paymentPackage(eventModel, bookedUserInfo);
-              }
-            }
-            return Center(child: Text("You are not booked any package",style: StyleText.nunitoSans_400_16.copyWith(fontSize: 24,color: MyColors.greyColor),),);
-        },
-      ));
+        ],
+      ),
+
+    );
+  }
+
+  Widget _debitCreditTotalView(DebitCreditModel debitCreditModel ){
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8)
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(child: Text(debitCreditModel.costingName ?? "",textAlign: TextAlign.center,)),
+            Expanded(child: Text(debitCreditModel.debitCreditType ?? "",textAlign: TextAlign.center)),
+            Expanded(child: Text(debitCreditModel.amount.toString(),textAlign: TextAlign.center)),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _paymentPackage(EventModel eventModel, BookedUserInfo bookedUserInfo) {

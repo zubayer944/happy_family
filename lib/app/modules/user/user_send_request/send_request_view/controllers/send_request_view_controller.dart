@@ -5,15 +5,26 @@ import 'package:happy_family/app/model/event_model.dart';
 import '../../../../../common/controller/app_controller.dart';
 import '../../../../../common/values/my_colors.dart';
 import '../../../../../routes/app_pages.dart';
+import '../../../../admin/total_cost/all_users/models/debit_credit_model.dart';
 import '../interface/send_request_view_interface.dart';
 
 class SendRequestViewController extends GetxController implements SendRequestViewInterface{
 
   final AppController appController = Get.find();
-  late EventModel eventMode;
+  Rx<EventModel> eventMode = EventModel().obs;
+  RxList<DebitCreditModel> eventList = <DebitCreditModel>[].obs;
+
+  Rx<int> totalDebitPrice = 0.obs;
+  Rx<int> totalCreditPrice = 0.obs;
+
   @override
   void onInit() {
-    eventMode = Get.arguments["event"];
+    eventMode.value = Get.arguments["event"];
+
+    _initSnapshot();
+
+    _initDebitCreditSnapshot();
+
     super.onInit();
   }
 
@@ -27,11 +38,57 @@ class SendRequestViewController extends GetxController implements SendRequestVie
     super.onClose();
   }
 
+  void _initSnapshot() {
+    FirebaseFirestore.instance.collection('events').doc(eventMode.value.documentId).snapshots().listen((DocumentSnapshot<Map<String, dynamic>> event) {
+      EventModel eventModel = EventModel.fromJson(event.data() as Map<String,dynamic>);
+      eventModel.documentId = event.id;
+
+      eventMode.value = eventModel;
+      eventMode.refresh();
+    });
+  }
+
+
+
+  void _initDebitCreditSnapshot() {
+    FirebaseFirestore.instance.collection('events').doc(eventMode.value.documentId).collection("debitCredit").snapshots().listen((QuerySnapshot<Map<String, dynamic>> event) {
+
+      eventList.clear();
+      _reset();
+
+      for (var element in event.docs) {
+        Map<String, dynamic> data = element.data();
+        DebitCreditModel debitCreditModel = DebitCreditModel.fromJson(data);
+        debitCreditModel.documentId = element.id;
+
+        _onUpdateTotalCost(debitCreditModel);
+
+        eventList.add(debitCreditModel);
+      }
+
+      eventList.refresh();
+    });
+  }
+
+  void _onUpdateTotalCost(DebitCreditModel debitCreditModel){
+    if(debitCreditModel.debitCreditType == "জমা"){
+      totalCreditPrice.value += debitCreditModel.amount ?? 0;
+    }else{
+      totalDebitPrice.value += debitCreditModel.amount ?? 0;
+    }
+  }
+
+  void _reset() {
+    totalCreditPrice.value = 0;
+    totalDebitPrice.value = 0;
+  }
+
+
 
   @override
-  void onSendRequestForMoneyPressed(EventModel eventModel) {
-    if( (eventModel.bookedUserInfo ?? []).where((element) => element.userId == appController.userModel.value.userId).isEmpty){
-      Get.toNamed(Routes.USER_PACKAGE_DETAILS,arguments:{"event": eventModel});
+  void onSendRequestForMoneyPressed() {
+    if( (eventMode.value.bookedUserInfo ?? []).where((element) => element.userId == appController.userModel.value.userId).isEmpty){
+      Get.toNamed(Routes.USER_PACKAGE_DETAILS,arguments:{"event": eventMode.value});
     }else {
       Get.snackbar("Please wait for booking confirmation!!!", "Already Booked this event",backgroundColor: MyColors.amberColor,);
     }
@@ -43,7 +100,7 @@ class SendRequestViewController extends GetxController implements SendRequestVie
     FirebaseFirestore.instance.collection('events');
     if(value == "delete"){
       BookedUserInfo? bookedUserInfo;
-      for(BookedUserInfo userInfo in eventMode.bookedUserInfo ?? []){
+      for(BookedUserInfo userInfo in eventMode.value.bookedUserInfo ?? []){
         if(userInfo.userId == appController.userModel.value.userId){
           bookedUserInfo = userInfo;
           break;
@@ -51,11 +108,11 @@ class SendRequestViewController extends GetxController implements SendRequestVie
       }
       if(bookedUserInfo != null){
 
-        eventCollection.doc(eventMode.documentId).update({"bookedUserInfo":FieldValue.arrayRemove([bookedUserInfo.toJson()])}).onError((error, stackTrace){
+        eventCollection.doc(eventMode.value.documentId).update({"bookedUserInfo":FieldValue.arrayRemove([bookedUserInfo.toJson()])}).onError((error, stackTrace){
           Get.snackbar("Failed", "$error");
           print('SendRequestViewController.onPopupAppBarIconClicked error : $stackTrace');
         });
-        eventCollection.doc(eventMode.documentId).update({
+        eventCollection.doc(eventMode.value.documentId).update({
           "totalBookedAdultCount": FieldValue.increment(-(bookedUserInfo.totalAdult ?? 0)),
           "totalBookedChildrenCount": FieldValue.increment(-(bookedUserInfo.totalChildren ?? 0)),
           "totalBookedUniqueCount": FieldValue.increment(-1),

@@ -47,7 +47,6 @@ class AllUsersController extends GetxController implements TotalCostInterface {
   }
 
   void _initSnapshot() {
-    print(id);
     FirebaseFirestore.instance.collection('events').doc(id).collection("debitCredit").snapshots().listen((QuerySnapshot<Map<String, dynamic>> event) {
 
       eventList.clear();
@@ -115,13 +114,6 @@ class AllUsersController extends GetxController implements TotalCostInterface {
       totalDebitPrice.value += debitCreditModel.amount ?? 0;
     }
   }
-  // void updateAllPrice(){
-  //   Future.delayed(const Duration(milliseconds: 100),(){
-  //     totalCreditPrice.value = totalCredit;
-  //     totalDebitPrice.value = totalDebit;
-  //   });
-  //
-  // }
 
   void _reset() {
     totalCreditPrice.value = 0;
