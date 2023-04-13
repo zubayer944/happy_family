@@ -28,6 +28,7 @@ class LoginView extends GetView<LoginController> {
                     titleText: "Phone",
                     hintTile: "Phone",
                     controller: controller.tecPhone.value,
+                    onChanged: (va) => controller.tecPhone.refresh(),
                     validator:(value)=> Utils.emptyValidator(value, "Phone number must be provide"),
                   ),),
                   const SizedBox(height:10),
@@ -37,8 +38,7 @@ class LoginView extends GetView<LoginController> {
                  hintTile: "Password",
                  controller: controller.tecPassword.value,
                  validator:(value)=> Utils.passwordValidator(value),
-
-
+                    onChanged: (va) => controller.tecPassword.refresh(),
                ),),
                   const SizedBox(height:25),
                   Obx(

@@ -14,4 +14,6 @@ class MyColors {
 
   static Color get blueColor => Colors.blue;
 
+  static Color get amberColor => Colors.amber;
+
 }

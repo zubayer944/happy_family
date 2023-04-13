@@ -18,4 +18,6 @@ class AllStrings {
   static String companyNameIsRequired = "Company name is required";
   static String designationIsRequired = "Designation is required";
   static String warningMsgForUserPackageDetails = "If You pay on bkash, then must add reference number when send money, Because of we can understand who send money, Otherwise tk can be missing\nআপনি যদি বিকাশে অর্থ প্রদান করেন, তাহলে টাকা পাঠানোর সময় অবশ্যই রেফারেন্স নম্বর যোগ করতে হবে, কারণ আমরা বুঝতে পারি কে টাকা পাঠায়, অন্যথায় টাকা হারিয়ে যেতে পারে";
+  static String warningBkashCashOutFee = "Bkash cash out fees 19tk auto added for every 1000tk \n প্রতি 1000 টাকায় বিকাশ ক্যাশ আউট ফি 19tk অটো যোগ করা হয়েছে";
+  static String warningForPressedBtn = "You must not pressed this button before  send money to bkash  or send money through bank acc,After completing transaction then put the correct information carefully then pressed this button. Otherwise your request is not valid you need to create again. \nবিকাশে টাকা পাঠানোর আগে বা ব্যাঙ্ক এসিসির মাধ্যমে টাকা পাঠানোর আগে আপনি অবশ্যই এই বোতাম টিপবেন না, লেনদেন শেষ করার পরে সঠিক তথ্যটি সাবধানে রাখুন তারপর এই বোতাম টিপুন। অন্যথায় আপনার অনুরোধ বৈধ নয় আপনাকে আবার তৈরি করতে হবে।";
 }
