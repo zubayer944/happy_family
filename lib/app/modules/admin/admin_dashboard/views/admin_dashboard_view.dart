@@ -56,7 +56,7 @@ class AdminDashboardView extends GetView<AdminDashboardController> {
                    onTap: controller.onEventPressed,
                    child: const Card(
                      child: Padding(
-                         padding: EdgeInsets.all(70),
+                         padding: EdgeInsets.all(50),
                          child: Text("Events")),
                    ),
                  ),
@@ -64,7 +64,7 @@ class AdminDashboardView extends GetView<AdminDashboardController> {
                    onTap: controller.onUsersPressed,
                    child: const Card(
                      child: Padding(
-                         padding: EdgeInsets.all(70),
+                         padding: EdgeInsets.all(50),
                          child: Text("Total Cost")),
                    ),
                  ),

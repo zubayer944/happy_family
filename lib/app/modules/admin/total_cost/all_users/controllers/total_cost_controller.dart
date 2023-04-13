@@ -20,16 +20,19 @@ class AllUsersController extends GetxController implements TotalCostInterface {
 
   Rx<int> totalDebitPrice = 0.obs;
   Rx<int> totalCreditPrice = 0.obs;
-  int totalCredit = 0;
-  int totalDebit = 0;
 
 
   late String id;
+
+  RxList<DebitCreditModel> eventList = <DebitCreditModel>[].obs;
 
 
   @override
   void onInit() {
     id = Get.arguments["id"];
+
+    _initSnapshot();
+
     super.onInit();
   }
 
@@ -41,6 +44,27 @@ class AllUsersController extends GetxController implements TotalCostInterface {
   @override
   void onClose() {
     super.onClose();
+  }
+
+  void _initSnapshot() {
+    print(id);
+    FirebaseFirestore.instance.collection('events').doc(id).collection("debitCredit").snapshots().listen((QuerySnapshot<Map<String, dynamic>> event) {
+
+      eventList.clear();
+      _reset();
+
+      for (var element in event.docs) {
+        Map<String, dynamic> data = element.data();
+        DebitCreditModel debitCreditModel = DebitCreditModel.fromJson(data);
+        debitCreditModel.documentId = element.id;
+
+        _onUpdateTotalCost(debitCreditModel);
+
+        eventList.add(debitCreditModel);
+      }
+
+      eventList.refresh();
+    });
   }
 
   @override
@@ -55,10 +79,13 @@ class AllUsersController extends GetxController implements TotalCostInterface {
         debitCreditType: amountType.value,
         addedBy: appController.userModel.value.userId,
       );
-      CollectionReference debitCreditCollection =
-      FirebaseFirestore.instance.collection('events').doc(id).collection("debitCredit");
+      CollectionReference debitCreditCollection = FirebaseFirestore.instance.collection('events').doc(id).collection("debitCredit");
 
       debitCreditCollection.add(debitCreditModel.toCreate()).then((DocumentReference<Object?> value){
+
+        tecAmount.value.text = "";
+        tecCostingName.value.text = "";
+
         Get.snackbar("Success", "All cost successfully added",backgroundColor: MyColors.greenColor);
 
       }).onError((error, stackTrace){
@@ -81,24 +108,24 @@ class AllUsersController extends GetxController implements TotalCostInterface {
     FirebaseFirestore.instance.collection('events').doc(id).collection("debitCredit").doc(debitCreditModel.documentId).delete();
   }
 
-  void onUpdateTotalCost(DebitCreditModel debitCreditModel){
+  void _onUpdateTotalCost(DebitCreditModel debitCreditModel){
     if(debitCreditModel.debitCreditType == "জমা"){
-      totalCredit += debitCreditModel.amount ?? 0;
+      totalCreditPrice.value += debitCreditModel.amount ?? 0;
     }else{
-      totalDebit += debitCreditModel.amount ?? 0;
+      totalDebitPrice.value += debitCreditModel.amount ?? 0;
     }
   }
-  void updateAllPrice(){
-    Future.delayed(const Duration(milliseconds: 100),(){
-      totalCreditPrice.value = totalCredit;
-      totalDebitPrice.value = totalDebit;
-    });
+  // void updateAllPrice(){
+  //   Future.delayed(const Duration(milliseconds: 100),(){
+  //     totalCreditPrice.value = totalCredit;
+  //     totalDebitPrice.value = totalDebit;
+  //   });
+  //
+  // }
 
-  }
-
-  void reset() {
-    totalCredit = 0;
-    totalDebit = 0;
+  void _reset() {
+    totalCreditPrice.value = 0;
+    totalDebitPrice.value = 0;
   }
 
 
