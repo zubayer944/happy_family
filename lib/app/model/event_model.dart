@@ -14,11 +14,8 @@ class EventModel {
   String? belowChildren;
   double? amount;
   int? totalBookedAdultCount;
-
   int? totalBookedChildrenCount;
-
   int? totalBookedUniqueCount;
-
   List<BookedUserInfo>? bookedUserInfo;
 
   EventModel({
@@ -112,6 +109,7 @@ class BookedUserInfo {
   int? totalAdult;
   int? totalChildren;
   String? createdAt;
+  String? bookedAllMemberName;
 
   BookedUserInfo({
     this.userId,
@@ -124,6 +122,7 @@ class BookedUserInfo {
     this.bkashReferenceId,
     required this.verifiedPayment,
     this.createdAt,
+    this.bookedAllMemberName,
   });
 
   BookedUserInfo.fromJson(Map<String, dynamic> json)
@@ -138,6 +137,7 @@ class BookedUserInfo {
           totalChildren: json['totalChildren'],
           verifiedPayment: json['verifiedPayment'],
           createdAt: (json['createdAt']).toString(),
+          bookedAllMemberName: json['bookedAllMemberName'],
         );
 
   Map<String, dynamic> toJson() {
@@ -152,6 +152,7 @@ class BookedUserInfo {
       "totalChildren": totalChildren,
       "verifiedPayment": verifiedPayment,
       "createdAt": createdAt,
+      "bookedAllMemberName": bookedAllMemberName,
     };
   }
 
@@ -166,6 +167,7 @@ class BookedUserInfo {
       "totalAdult": totalAdult,
       "totalChildren": totalChildren,
       "verifiedPayment": verifiedPayment,
+      "bookedAllMemberName": bookedAllMemberName,
     };
   }
 }

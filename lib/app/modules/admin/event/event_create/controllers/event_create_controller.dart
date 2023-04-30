@@ -48,7 +48,7 @@ class EventCreateController extends GetxController
       bankAccNo: tecBankAccNo.value.text.trim(),
       lastBookingDate: expiredEventDate.value,
       belowChildren: "Free (Not for All)",
-      location: "Natore,Rajshahi",
+      location: "Chandpur,Natore,Rajshahi",
       nagadOrBkashNumber: tecBkashOrNagadNo.value.text.trim(),
     );
     CustomLoader.show;

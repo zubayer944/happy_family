@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:happy_family/app/common/utils/utils.dart';
 import 'package:happy_family/app/common/values/my_colors.dart';
-
 import '../../../../common/controller/app_controller.dart';
 import '../../../../common/widgets/custom_loader.dart';
 import '../../../../model/event_model.dart';
@@ -20,6 +19,7 @@ class UserPackageDetailsController extends GetxController
   final AppController appController = Get.find();
 
   Rx<TextEditingController> tecNameMem = TextEditingController().obs;
+  Rx<TextEditingController> tecAllMemberName = TextEditingController().obs;
   Rx<TextEditingController> tecTotalMem = TextEditingController().obs;
   Rx<TextEditingController> tecTotalAdult = TextEditingController().obs;
   Rx<TextEditingController> tecTotalUnderAge = TextEditingController().obs;

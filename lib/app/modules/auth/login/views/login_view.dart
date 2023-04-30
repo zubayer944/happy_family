@@ -21,7 +21,7 @@ class LoginView extends GetView<LoginController> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(height:180,child: Lottie.asset("assets/lotties/9969-halloween-pumpkin-black-cat.json")),
+                  SizedBox(height:180,child: Image.asset("assets/logo/ic_launcher.png")),
                   const SizedBox(height: 25,),
                   Obx(() => CustomTextFromField(
                     keyboardType: TextInputType.phone,

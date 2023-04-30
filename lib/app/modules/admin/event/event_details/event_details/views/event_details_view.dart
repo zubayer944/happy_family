@@ -74,7 +74,7 @@ class EventDetailsView extends GetView<EventDetailsController> {
       margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
       width: double.infinity,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10), border: Border.all()),
+          borderRadius: BorderRadius.circular(10), border: Border.all(color: MyColors.greyColor)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -128,14 +128,14 @@ class EventDetailsView extends GetView<EventDetailsController> {
             children:[
               const Text('Payment Verification', style: TextStyle(fontSize: 16),),
               Transform.scale(
-                scale: 2,
+                scale: 1.5,
                 child: Switch(
                   onChanged:(bool value)=> controller.onIsVerifiedBtn(value,bookedUserInfo),
                   value: bookedUserInfo.verifiedPayment,
                   activeColor: Colors.blue,
-                  activeTrackColor: Colors.yellow,
+                  activeTrackColor: Colors.green,
                   inactiveThumbColor: Colors.redAccent,
-                  inactiveTrackColor: Colors.orange,
+                  inactiveTrackColor: Colors.grey,
                 )
             ),
             ]),

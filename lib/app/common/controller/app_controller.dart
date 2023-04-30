@@ -1,11 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 
 import '../../model/user_model.dart';
 
 class AppController extends GetxController {
 
+
+
   Rx<UserModel> userModel = UserModel().obs;
+   late String fcmTokenId;
 
 
   void startUserSnapshot(String docId) {
@@ -15,6 +19,14 @@ class AppController extends GetxController {
       userModel.refresh();
 
     });
+  }
+
+  @override
+  void onInit() async{
+
+     fcmTokenId = (await FirebaseMessaging.instance.getToken()) ?? "";
+
+    super.onInit();
   }
 
 }

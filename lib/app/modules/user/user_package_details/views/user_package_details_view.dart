@@ -61,6 +61,21 @@ class UserPackageDetailsView extends GetView<UserPackageDetailsController> {
               ),),
               const SizedBox(height:20),
               Obx(() => CustomTextFromField(
+                maxLine: null,
+                keyboardType: TextInputType.multiline,
+                titleText: "All Members Name ",
+                hintTile: "Enter all members name",
+                controller: controller.tecAllMemberName.value,
+
+                onChanged: (String value){
+                },
+                suffixIcons: InkWell(
+                    onTap: (){},
+                    child:const Icon(Icons.done_outline_rounded)),
+                // validator:(value)=> Utils.emptyValidator(value,"Total member no is required"),
+              ),),
+              const SizedBox(height:20),
+              Obx(() => CustomTextFromField(
                 readOnly: true,
                 keyboardType: TextInputType.number,
                 titleText: "Total Member",

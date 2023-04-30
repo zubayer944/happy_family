@@ -38,7 +38,7 @@ class AdminDashboardController extends GetxController implements AdminDashboardI
 
   @override
   void onUsersPressed() {
-    Get.toNamed(Routes.TOTAL_COST);
+    // Get.toNamed(Routes.TOTAL_COST);
   }
 
   @override

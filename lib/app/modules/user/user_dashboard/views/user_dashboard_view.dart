@@ -96,9 +96,9 @@ class UserDashboardView extends GetView<UserDashboardController> {
               // Obx(() => Text(Get.find<AppController>().userModel.value.name ?? "",style: StyleText.nunitoSans_600_18,),),
               const SizedBox(height: 5,),
               _richText("Package name",(eventModel.eventName ?? "")),
-              _richText("Adult Per Person Amount",(eventModel.adultPrice ?? 0).toString()),
+              _richText("Adult Per Person Amount","${eventModel.adultPrice ?? 0} TK"),
               const SizedBox(height: 5,),
-              _richText("5-12years Per Children Amount",(eventModel.childrenPrice ?? 0).toString()),
+              _richText("5-12years Per Children Amount","${eventModel.childrenPrice ?? 0} TK"),
               const SizedBox(height: 5,),
               _richText("Below 5 years Children Amount","Free (Not for all)"),
               const SizedBox(height: 5,),
@@ -116,7 +116,7 @@ class UserDashboardView extends GetView<UserDashboardController> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _richText("Already booked member",(((eventModel.totalBookedAdultCount ?? 0 ) + (eventModel.totalBookedChildrenCount ?? 0 )).toString())),
+                  _richText("Already booked member",("${((eventModel.totalBookedAdultCount ?? 0 ) + (eventModel.totalBookedChildrenCount ?? 0 ))} Persons")),
                   // Visibility(
                   //   visible: controller.paymentStatus(eventModel) != null,
                   //   child: Container(
