@@ -16,6 +16,7 @@ abstract class Routes {
   static const EVENT_DETAILS = _Paths.EVENT_DETAILS;
   static const SEND_REQUEST_VIEW = _Paths.SEND_REQUEST_VIEW;
   static const PAYMENTS = _Paths.PAYMENTS;
+  static const MY_CHCEK_BOX = _Paths.MY_CHCEK_BOX;
 }
 
 abstract class _Paths {
@@ -33,4 +34,5 @@ abstract class _Paths {
   static const EVENT_DETAILS = '/event-details';
   static const SEND_REQUEST_VIEW = '/send-request-view';
   static const PAYMENTS = '/payments';
+  static const MY_CHCEK_BOX = '/my-chcek-box';
 }

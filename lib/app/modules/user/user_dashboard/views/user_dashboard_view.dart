@@ -1,11 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
-import 'package:happy_family/app/common/utils/utils.dart';
 import 'package:happy_family/app/common/values/my_colors.dart';
 import 'package:happy_family/app/common/values/style_text.dart';
-
 import '../../../../common/widgets/copy_to_clip_board.dart';
 import '../../../../model/event_model.dart';
 import '../controllers/user_dashboard_controller.dart';
@@ -100,7 +97,7 @@ class UserDashboardView extends GetView<UserDashboardController> {
               const SizedBox(height: 5,),
               _richText("5-12years Per Children Amount","${eventModel.childrenPrice ?? 0} TK"),
               const SizedBox(height: 5,),
-              _richText("Below 5 years Children Amount","Free (Not for all)"),
+              _richText("Below 5 years Amount","Free (Not for all)"),
               const SizedBox(height: 5,),
               _richText("Event date",eventModel.date.toString()),
               const SizedBox(height: 5,),
@@ -108,7 +105,8 @@ class UserDashboardView extends GetView<UserDashboardController> {
               const SizedBox(height: 5,),
               Row(
                 children: [
-                  _richText("Bkash account no to send money",eventModel.nagadOrBkashNumber.toString()),
+                  _richText("Bkash account to send money",eventModel.nagadOrBkashNumber.toString()),
+                  const SizedBox(width: 3,),
                   CopyToClipBoardIcon(value: eventModel.nagadOrBkashNumber.toString(), )
                 ],
               ),

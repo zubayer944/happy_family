@@ -100,5 +100,6 @@ class AppPages {
       page: () => const PaymentsView(),
       binding: PaymentsBinding(),
     ),
+
   ];
 }

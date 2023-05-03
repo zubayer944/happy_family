@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:happy_family/app/common/controller/app_controller.dart';
 import 'package:happy_family/app/common/local_storage/storage_helper.dart';
@@ -38,6 +39,10 @@ class UserDashboardController extends GetxController implements UserDashBoardInt
   @override
   void onPopupAppBarIconClicked(String result) {
     if(result == "logout"){
+      FirebaseFirestore.instance.collection('users').doc(appController.userModel.value.userId).update({
+        'isOnline' : false,
+        'pushToken' : "",
+      });
       Get.offAndToNamed(Routes.LOGIN);
       StorageHelper.logout();
     }

@@ -9,14 +9,19 @@ import '../../../../model/event_model.dart';
 import '../../user_dashboard/model/payment_model.dart';
 import '../interface/user_package_details_interface.dart';
 
-class UserPackageDetailsController extends GetxController
-    implements UserPackageDetailsInterface {
+class UserPackageDetailsController extends GetxController implements UserPackageDetailsInterface {
   final formKey = GlobalKey<FormState>();
 
   Rx<PaymentModel> paymentModel = PaymentModel().obs;
 
   // CollectionReference payments = FirebaseFirestore.instance.collection('payments');
   final AppController appController = Get.find();
+
+  RxBool isCheckedBkash = false.obs;
+  RxBool isCheckedCash = false.obs;
+  RxBool isCheckedNagad = false.obs;
+  RxBool isCheckedBank = false.obs;
+  RxBool isCheckedExtra = false.obs;
 
   Rx<TextEditingController> tecNameMem = TextEditingController().obs;
   Rx<TextEditingController> tecAllMemberName = TextEditingController().obs;
@@ -115,19 +120,54 @@ class UserPackageDetailsController extends GetxController
 
   @override
   void onTotalMemberAndAmountChanged(String value) {
+    _updateAmountAndMember();
+  }
+
+  void _updateAmountAndMember(){
     int adultMember = int.parse(
         tecTotalAdult.value.text.isEmpty ? "0" : tecTotalAdult.value.text);
     int childrenMember = int.parse(tecTotalUnderAge.value.text.isEmpty
         ? "0"
         : tecTotalUnderAge.value.text);
-
     int total = ((adultMember * (event.adultPrice ?? 0)) +
         (childrenMember * (event.childrenPrice ?? 0)));
+
     tecTotalMem.value.text = (adultMember + childrenMember).toString();
-    tecAmount.value.text = (total + _cashOutFee(total)).toString();
+    if(isCheckedBkash.value || isCheckedNagad.value){
+
+      tecAmount.value.text = (total + _cashOutFee(total)).toString();
+    }
+
+    if(isCheckedBank.value){
+
+      tecAmount.value.text = (total + 10).toString();
+    }
+
+    if(isCheckedCash.value){
+      tecAmount.value.text = total.toString();
+    }
+    if(isCheckedExtra.value){
+      tecAmount.value.text = total.toString();
+    }
   }
 
   int _cashOutFee(int totalAmount) {
     return ((19 * totalAmount) / 1000).ceil();
+  }
+
+  void toggleCheckBox(bool value,String s) {
+    isCheckedBkash.value = false;
+    isCheckedCash.value = false;
+    isCheckedNagad.value = false;
+    isCheckedBank.value = false;
+    isCheckedExtra.value = false;
+    tecAmount.value.text = "";
+    if(s == "Bkash")isCheckedBkash.value = value;
+    if(s == "Hand Cash")isCheckedCash.value = value;
+    if(s == "Nagad")isCheckedNagad.value = value;
+    if(s == "Bank")isCheckedBank.value = value;
+    if(s =="Extra Payment")isCheckedExtra.value = value;
+
+    _updateAmountAndMember();
   }
 }

@@ -40,6 +40,7 @@ class LoginController extends GetxController implements LoginInterface {
     if(formKey.currentState!.validate()){
       formKey.currentState!.save();
 
+
       _userExistOrNot();
 
     }
@@ -59,12 +60,17 @@ class LoginController extends GetxController implements LoginInterface {
         StorageHelper.setUserPhone(tecPhone.value.text.trim());
         StorageHelper.setUserPassword(tecPassword.value.text.trim());
         StorageHelper.setUserRole(userModel.role);
+        FirebaseFirestore.instance.collection('users').doc(value.docs.first.id).update({
+          'isOnline' : true,
+          'pushToken' : appController.fcmTokenId,
+        });
         if(userModel.role == "User"){
+          // print('LoginController._userExistOrNot ');
           Get.offAllNamed(Routes.USER_DASHBOARD);
         }else{
           Get.offAllNamed(Routes.ADMIN_DASHBOARD);
         }
-        ///TODO select admin role here
+        ///TODO select admin role here01
       }else{
         Get.snackbar("Something went wrong", "Sorry!! Phone or password is not correct",colorText: MyColors.redColor,backgroundColor:MyColors.redColor.withOpacity(0.3));
       }

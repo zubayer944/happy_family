@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../common/values/my_colors.dart';
@@ -13,7 +12,7 @@ class SendRequestViewView extends GetView<SendRequestViewController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade200,
+      // backgroundColor: Colors.grey.shade200,
       floatingActionButton: Obx(
         () => Visibility(
           visible: (controller.eventMode.value.bookedUserInfo ?? [])
@@ -106,12 +105,16 @@ class SendRequestViewView extends GetView<SendRequestViewController> {
                           border: Border.all(color: MyColors.greyColor)),
                       child: Wrap(
                         children: controller.eventList
-                            .map((DebitCreditModel element) {
-                          return element.debitCreditType == "জমা"
-                              ? _debitCreditTotalView(element)
-                              : const SizedBox();
-                        }).toList(),
-                      ),
+                              .asMap()
+                              .entries
+                              .map((e) {
+                          Color color1 = MyColors.whiteColor;
+                          Color color2 = MyColors.greyColor.withOpacity(0.4);
+                          final color = e.key % 2 == 0 ? color1 : color2;
+                        return e.value.debitCreditType == "জমা"
+                            ? _debitCreditTotalView(e.value, e.key, color)
+                            : const SizedBox();
+                      }).toList()),
                     ),
                     const SizedBox(
                       height: 5,
@@ -124,10 +127,13 @@ class SendRequestViewView extends GetView<SendRequestViewController> {
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(color: MyColors.greyColor)),
                       child: Wrap(
-                        children: controller.eventList
-                            .map((DebitCreditModel element) {
-                          return element.debitCreditType == "খরচ"
-                              ? _debitCreditTotalView(element)
+                        children: controller.eventList.asMap().entries
+                            .map((e) {
+                          Color color1 = MyColors.whiteColor;
+                          Color color2 = MyColors.greyColor.withOpacity(0.4);
+                          final color = e.key % 2 == 0 ? color1 : color2;
+                          return e.value.debitCreditType == "খরচ"
+                              ? _debitCreditTotalView(e.value,e.key,color)
                               : const SizedBox();
                         }).toList(),
                       ),
@@ -145,11 +151,14 @@ class SendRequestViewView extends GetView<SendRequestViewController> {
     );
   }
 
-  Widget _debitCreditTotalView(DebitCreditModel debitCreditModel) {
+  Widget _debitCreditTotalView(DebitCreditModel debitCreditModel, int index, Color color, ) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5.0),
       child: Container(
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
+        padding: const EdgeInsets.all(5),
+        decoration: BoxDecoration(
+          color:color,
+            borderRadius: BorderRadius.circular(8)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
